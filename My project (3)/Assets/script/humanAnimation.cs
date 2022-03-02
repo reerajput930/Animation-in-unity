@@ -9,21 +9,60 @@ public class humanAnimation : MonoBehaviour
     void Start()
     {
         Debug.Log("hello world");
+            //animator.SetBool("isWalking",false);       
     }
 
     // Update is called once per frame
     void Update()
     {
         bool isWalking = animator.GetBool("isWalking");
+        bool fastWalking = animator.GetBool("fastWalking");
+        bool jump = animator.GetBool("jump");
+        bool dance = animator.GetBool("dance");
+
         bool forwardPressed = Input.GetKey("w");
+        bool fastPressed = Input.GetKey("left shift");
+        bool jumpPressed = Input.GetKey("space");
+        bool dancePressed = Input.GetKey("q");
+         
+        //is walking
         if (!isWalking && forwardPressed)
         {
-            animator.SetBool("isWalking",true);
+            animator.SetBool("isWalking", true);
         }
         if (isWalking && !forwardPressed)
         {
             animator.SetBool("isWalking", false);
         }
-        
+       
+        //walk -- then fast move
+        //that means , fast walking possible only when the body is walking
+        if ((forwardPressed) && (!fastWalking && fastPressed))
+        {
+            animator.SetBool("fastWalking", true);
+        }
+        if ((forwardPressed || !forwardPressed) && fastWalking && !fastPressed)
+        {
+            animator.SetBool("fastWalking", false);
+            
+        }
+
+        //making things jump
+        if ((!isWalking && forwardPressed) || !jump && jumpPressed)
+        {
+            animator.SetBool("jump", true);
+        }
+        if((isWalking && !forwardPressed )|| (jump && !jumpPressed))
+        {
+            animator.SetBool("jump", false);
+        }
+        if( !dance && dancePressed)
+        {
+            animator.SetBool("dance", true);
+        }
+        if(dance && !dancePressed)
+        {
+            animator.SetBool("dance", false);
+        }
     }
 }
